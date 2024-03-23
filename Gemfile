@@ -47,6 +47,7 @@ gem 'activeadmin', '~> 3.2'
 gem 'devise'
 gem 'cancancan'
 gem "sassc-rails"
+gem 'enumerize'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
