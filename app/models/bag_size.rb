@@ -1,0 +1,2 @@
+class BagSize < ApplicationRecord
+end

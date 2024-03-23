@@ -10,3 +10,10 @@
 AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
 BagCategory.create!(name: 'Fouji Shopping Bag')
 BagCategory.create!(name: 'Vicky Shopping Bag') 
+BagSize.create!(size: '7 X 9')
+BagSize.create!(size: '8 X 11')
+BagSize.create!(size: '10 X 13')
+BagSize.create!(size: '12 X 15')
+BagSize.create!(size: '15 X 18')
+BagSize.create!(size: '18 X 21')
+BagSize.create!(size: '18 X 26')
