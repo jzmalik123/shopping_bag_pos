@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_23_114027) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_23_115440) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -57,8 +57,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_23_114027) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "order_items", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "bag_sizes_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bag_sizes_id"], name: "index_order_items_on_bag_sizes_id"
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+  end
+
   create_table "orders", force: :cascade do |t|
     t.integer "customer_id"
+    t.integer "bag_categories_id"
     t.integer "payment_method"
     t.date "order_date"
     t.integer "total_amount"
@@ -66,8 +76,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_23_114027) do
     t.integer "total_weight"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["bag_categories_id"], name: "index_orders_on_bag_categories_id"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
   end
 
+  add_foreign_key "order_items", "bag_sizes", column: "bag_sizes_id"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "orders", "bag_categories", column: "bag_categories_id"
   add_foreign_key "orders", "customers"
 end
