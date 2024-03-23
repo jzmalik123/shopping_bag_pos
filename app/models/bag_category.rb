@@ -1,0 +1,2 @@
+class BagCategory < ApplicationRecord
+end
