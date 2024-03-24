@@ -1,0 +1,91 @@
+<link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<%= wicked_pdf_stylesheet_link_tag "invoice" %>
+<!------ Include the above in your HEAD tag ---------->
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+    		<div class="invoice-title">
+    			<img src="<%= image_url('logo_full') %>" width="200"><h3 class="pull-right">Order # <%= order.id %></h3>
+    		</div>
+    		<hr>
+    		<div class="row">
+    			<div class="col-xs-6">
+    				<address>
+    				<strong>Billed To:</strong> <%= order.customer.name %><br>
+    				</address>
+    			</div>
+					<div class="col-xs-6 text-right">
+    				<address>
+    					<strong>Order Date:</strong> <%= order.order_date.strftime("%d %B %Y") %><br>
+    				</address>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <div class="row">
+    	<div class="col-md-12">
+    		<div class="panel panel-default">
+    			<div class="panel-heading">
+    				<h3 class="panel-title"><strong>Order summary</strong></h3>
+    			</div>
+    			<div class="panel-body">
+    				<div class="table-responsive">
+    					<table class="table table-condensed">
+    						<thead>
+                    <tr>
+        							<td><strong>Size</strong></td>
+        							<td class="text-center"><strong>Weight</strong></td>
+        							<td class="text-center"><strong>Bag</strong></td>
+        							<td class="text-center"><strong>Rate</strong></td>
+											<td class="text-center"><strong>Amount</strong></td>
+                    </tr>
+    						</thead>
+    						<tbody>
+    							<!-- foreach ($order->lineItems as $line) or some such thing here -->
+									<% BagSize.all.each do |bag_size| %>
+    							<tr>
+    								<td><%= bag_size.size %></td>
+										<% order_item = order_items[bag_size.id]&.first %>
+    								<td class="text-center"><%= order_item&.weight %></td>
+    								<td class="text-center"><%= order_item&.quantity %></td>
+    								<td class="text-center"><%= number_with_delimiter order_item&.rate %></td>
+										<td class="text-center"><%= number_with_delimiter order_item&.amount %></td>
+    							</tr>
+									<% end %>
+									<tr>
+    								<td>Totals</td>
+    								<td class="text-center"><strong><%= order.total_weight %></strong></td>
+    								<td class="text-center"><strong><%= order.order_items.sum(:quantity) %></strong></td>
+    								<td class="text-center"></td>
+										<td class="text-center"><strong><%= number_with_delimiter order.order_items.sum(:amount) %></strong></td>
+    							</tr>
+    							<tr>
+    								<td class="thick-line"></td>
+    								<td class="thick-line"></td>
+    								<td class="thick-line text-center"><strong>Pre. Balance</strong></td>
+    								<td class="thick-line text-right"><%= number_with_delimiter previous_balance %></td>
+    								<td class="thick-line"></td>
+    							</tr>
+    							<tr>
+    								<td class="no-line"></td>
+    								<td class="no-line"></td>
+    								<td class="no-line text-center"><strong>Received Amount</strong></td>
+    								<td class="no-line text-right"><%= number_with_delimiter order.received_amount %></td>
+    							</tr>
+    							<tr>
+    								<td class="no-line"></td>
+    								<td class="no-line"></td>
+    								<td class="no-line text-center"><strong>Amount Remaining</strong></td>
+    								<td class="no-line text-right"><%= number_with_delimiter order.customer.balance %></td>
+    							</tr>
+    						</tbody>
+    					</table>
+							<br>
+							<div class="breadcrumb"><h4 class="text-center">Contact: 0323-4000019, 0322-9003090</h4></div>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+</div>

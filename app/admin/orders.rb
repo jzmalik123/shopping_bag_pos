@@ -9,12 +9,23 @@ ActiveAdmin.register Order do
       @order = Order.new(params[:order])
       if @order.save
         @order.customer.update!(balance: params[:order][:remaining_balance])
-        redirect_to admin_order_path(@order) and return
+        render pdf: "Invoice No. #{@order.id}",
+                page_size: 'A4',
+                template: "invoices/invoice",
+                orientation: "Portrait",
+                lowquality: true,
+                zoom: 1,
+                dpi: 75,
+                locals: {
+                  order: @order,
+                  order_items: Order.last.order_items.group_by(&:bag_size_id),
+                  previous_balance: params[:order][:previous_balance]
+                } and return
       else
         flash[:notice] = 'Order cant be saved. Try again'
       end
     end
-
+    
   end
 
 
