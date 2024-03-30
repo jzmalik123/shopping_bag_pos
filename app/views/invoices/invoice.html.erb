@@ -11,7 +11,7 @@
     		<div class="row">
     			<div class="col-xs-6">
     				<address>
-    				<strong>Billed To:</strong> <%= order.customer.name %><br>
+    				<strong>Billed To:</strong> <%= customer_name %><br>
     				</address>
     			</div>
 					<div class="col-xs-6 text-right">
@@ -55,7 +55,7 @@
 									<% end %>
 									<tr>
     								<td>Totals</td>
-    								<td class="text-center"><strong><%= order.total_weight %></strong></td>
+    								<td class="text-center"><strong><%= order.total_weight %> (KG)</strong></td>
     								<td class="text-center"><strong><%= order.order_items.sum(:quantity) %></strong></td>
     								<td class="text-center"></td>
 										<td class="text-center"><strong><%= number_with_delimiter order.order_items.sum(:amount) %></strong></td>
