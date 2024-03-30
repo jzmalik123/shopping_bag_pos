@@ -38,6 +38,12 @@ function updateRemainingBalance(field){
 
 $(document).ready(function() {
   $('#order_customer_id').on("change", function(){
+    if($(this).val() == 1){
+      $('#order_customer_name_input').show()
+    }else{
+      $('#order_customer_name_input').hide()
+    }
+
     $.ajax({
       url: `/admin/customers/${$(this).val()}/previous_balance`,
       method: 'GET',

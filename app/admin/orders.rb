@@ -8,8 +8,8 @@ ActiveAdmin.register Order do
       params.permit!
       @order = Order.new(params[:order])
       if @order.save
-        @order.customer.update!(balance: params[:order][:remaining_balance])
-        render pdf: "Invoice No. #{@order.id}",
+        @order.customer.update!(balance: params[:order][:remaining_balance]) if @order.customer_id != Customer::WALKIN_CUSTOMER_ID
+        render pdf: "#{@order.id}",
                 page_size: 'A4',
                 template: "invoices/invoice",
                 orientation: "Portrait",
@@ -19,19 +19,73 @@ ActiveAdmin.register Order do
                 locals: {
                   order: @order,
                   order_items: Order.last.order_items.group_by(&:bag_size_id),
-                  previous_balance: params[:order][:previous_balance]
+                  previous_balance: params[:order][:previous_balance],
+                  customer_name: @order.customer_id == Customer::WALKIN_CUSTOMER_ID ? params[:order][:customer_name] : @order.customer.name
                 } and return
       else
         flash[:notice] = 'Order cant be saved. Try again'
       end
     end
     
+    def update
+      params.permit!
+      @order = Order.find(params[:id])
+      if @order.update(params[:order])
+        @order.customer.update!(balance: params[:order][:remaining_balance]) if @order.customer_id != Customer::WALKIN_CUSTOMER_ID
+        render pdf: "#{@order.id}",
+                page_size: 'A4',
+                template: "invoices/invoice",
+                orientation: "Portrait",
+                lowquality: true,
+                zoom: 1,
+                dpi: 75,
+                locals: {
+                  order: @order,
+                  order_items: Order.last.order_items.group_by(&:bag_size_id),
+                  previous_balance: params[:order][:previous_balance],
+                  customer_name: @order.customer_id == Customer::WALKIN_CUSTOMER_ID ? params[:order][:customer_name] : @order.customer.name
+                } and return
+      else
+        flash[:notice] = 'Order cant be saved. Try again'
+      end
+    end
+
+    def destroy
+      @order = Order.find(params[:id])
+      @order.destroy
+      @order.customer.update(balance: @order.customer.balance + @order.received_amount - @order.total_amount)
+      flash[:notice] = 'Order is deleted'
+      redirect_to(admin_orders_path) and return 
+    end
   end
 
+  show do
+    attributes_table_for order do
+      row("CUSTOMER") { link_to(order.customer.name, admin_customer_path(order.customer_id)) }
+      row("BAG CATEGORY") { order.bag_category.name }
+      row("PAYMENT METHOD") { order.payment_method }
+      row("ORDER DATE") { order.order_date.strftime("%B %d, %Y") }
+      row("TOTAL AMOUNT") { number_with_delimiter(order.total_amount) }
+      row("RECEIVED AMOUNT") { number_with_delimiter(order.received_amount) }
+      row("TOTAL WEIGHT") { order.total_weight }
+    end
+
+    panel "Order Items" do
+      table_for order.order_items do
+        column("Bag Size") { |item| item.bag_size.size }
+        column("Rate") { |item| number_with_delimiter(item.rate) }
+        column("Weight") { |item| item.weight }
+        column("Quantity") { |item| item.quantity }
+        column("Amount") { |item| number_with_delimiter(item.amount) }
+      end
+    end
+    active_admin_comments_for(resource)
+  end
 
   form do |f|
     f.inputs 'Order Details' do
       f.input :customer, label: 'Customer Name', selected: Customer::WALKIN_CUSTOMER_ID, include_blank: false
+      f.input :customer_name, label: 'Walkin Customer Name'
       f.input :previous_balance, input_html: { readonly: true }
       f.input :bag_category, label: 'Category', selected: BagCategory::FOUJI_BAG_CATEGORY_ID, include_blank: false
       f.input :order_date, as: :datepicker,
