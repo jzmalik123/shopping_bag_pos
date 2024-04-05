@@ -53,4 +53,10 @@ $(document).ready(function() {
       }
     });
   })
+
+  $('#payment_source_id').on("change", function(){
+    balance = $(this).find('option:selected').data("balance")
+    $('#payment_previous_balance').val(balance)
+    $('#payment_source_type').val($(this).find('option:selected').data("source-type"))
+  })
 })

@@ -1,0 +1,86 @@
+<html lang="en-US"><head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="utf-8">
+		<title>
+		</title>
+		<style>
+			body { font-family:'Times New Roman'; font-size:10pt }
+			p { margin:0pt }
+			table { margin-top:0pt; margin-bottom:0pt }
+			.Footer { margin-bottom:0pt; line-height:normal; font-family:'Times New Roman'; font-size:10pt }
+			.Header { margin-bottom:0pt; line-height:normal; font-family:'Times New Roman'; font-size:10pt }
+			span.FooterChar { font-family:'Times New Roman'; font-size:10pt }
+			span.HeaderChar { font-family:'Times New Roman'; font-size:10pt }
+		</style>
+	</head>
+	<body style="
+    border: 2px solid black;
+    height: 500px;
+">
+			<p style="margin-top:1.35pt; margin-right:23.45pt; font-size:27pt">
+				<span style="height:0pt; margin-top:-1.35pt; display:block; position:absolute; z-index:-1"><img src="<%= image_url('logo_full') %>" width="418" height="133" alt="" style="margin-top:4.7pt; margin-left:20.9pt; position:absolute"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			</p>
+			<p style="margin-top:1.35pt;margin-right:23.45pt;font-size:27pt;float: right;"><strong><span style="font-size:22pt; letter-spacing:0.05pt">Invoice # <%= payment.id %></span></strong>
+			</p>
+			<p style="margin-top:1.35pt; margin-right:23.45pt; font-size:22pt">
+				<strong><span style="letter-spacing:0.05pt">&nbsp; </span></strong>
+			</p>
+			<p style="margin-right:8.9pt; text-align:center; font-size:22pt">
+				<span style="letter-spacing:0.05pt">&nbsp;</span>
+			</p>
+			<p style="font-size:22pt;text-align: end;">
+				<span style="letter-spacing:0.05pt">Date:- <%= payment.payment_date.strftime("%d %B %Y")%></span>&nbsp;&nbsp; 
+			</p>
+			<p style="font-size:9pt">
+				<span style="font-family:Arial">&nbsp;</span>
+			</p>
+			<p style="font-size:22pt;margin-left: 2%;">
+				<span style="font-family:Arial">Cash</span><span style="font-family:Arial; letter-spacing:-1.85pt"> </span><span style="font-family:Arial">Received</span><span style="font-family:Arial; letter-spacing:-1.85pt"> </span><span style="font-family:Arial">From</span><span style="font-family:Arial; letter-spacing:-1.85pt"> </span><u><span style="font-family:Arial; ">:-</span></u><u><span style="font-family:Arial; ">&nbsp; </span></u><u><span style="font-family:Arial; "><%= payment.source.name %></span></u>
+			</p>
+			<p style="font-size:8pt">
+				<span style="font-family:Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+			</p>
+			
+			<table style="margin-right:9pt;margin-left: 20pt;border:0.75pt solid #000000;border-collapse:collapse;margin-top: 3%;">
+				<tbody><tr style="height:37.8pt">
+					<td style="width:191.45pt; border-right:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
+						<p style="margin-right:8.9pt; font-size:20pt">
+							<strong><span style="font-family:Arial; ">Total</span></strong><strong><span style="font-family:Arial; letter-spacing:-0.4pt"> </span></strong><strong><span style="font-family:Arial; ">Amo</span></strong><strong><span style="font-family:Arial; letter-spacing:0.1pt">u</span></strong><strong><span style="font-family:Arial; ">nt</span></strong><strong><span style="font-family:Arial; letter-spacing:-0.35pt"> </span></strong><strong><span style="font-family:Arial; letter-spacing:0.1pt">D</span></strong><strong><span style="font-family:Arial; ">ue</span></strong>
+						</p>
+					</td>
+					<td style="width:128.95pt; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
+						<p style="margin-right:8.9pt; font-size:27pt">
+							<%= number_with_delimiter payment.previous_balance %>
+						</p>
+					</td>
+				</tr>
+				<tr style="height:37.8pt">
+					<td style="width:191.45pt; border-top:0.75pt solid #000000; border-right:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
+						<p style="margin-right:8.9pt; font-size:20pt">
+							<strong><span style="font-family:Arial; ">Amount Received</span></strong>
+						</p>
+					</td>
+					<td style="width:128.95pt; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
+						<p style="margin-right:8.9pt; font-size:27pt">
+							&nbsp;<%= number_with_delimiter payment.amount %>
+						</p>
+					</td>
+				</tr>
+				<tr style="height:37.8pt">
+					<td style="width:191.45pt; border-top:0.75pt solid #000000; border-right:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
+						<p style="margin-right:8.9pt; font-size:20pt">
+							<strong><span style="font-family:Arial; ">Remaining Amount</span></strong>
+						</p>
+					</td>
+					<td style="width:128.95pt; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
+						<p style="margin-right:8.9pt; font-size:27pt">
+							&nbsp;<%= number_with_delimiter(payment.previous_balance - payment.amount) %>
+						</p>
+					</td>
+				</tr>
+			</tbody></table>
+<p style="text-align:center;font-size:22pt;margin-right: 11%;">
+				
+			<p style="letter-spacing:0.05pt;text-align: right;margin-right: 7%;">Signed By</p></p><p style="text-align:center;font-size:22pt;margin-right: 11%;">
+				
+			<p style="letter-spacing:0.05pt;text-align: center;">Contact: 0323-4000019, 0322-9003090</p></p></body></html>
