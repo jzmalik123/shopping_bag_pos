@@ -84,8 +84,8 @@ ActiveAdmin.register Order do
 
   form do |f|
     f.inputs 'Order Details' do
-      f.input :customer, label: 'Customer Name', selected: Customer::WALKIN_CUSTOMER_ID, include_blank: false
-      f.input :customer_name, label: 'Walkin Customer Name'
+      f.input :customer, as: :searchable_select, label: 'Customer Name', selected: f.object.new_record? ? Customer::WALKIN_CUSTOMER_ID : f.object.customer_id, include_blank: false
+      f.input :customer_name, label: 'Walkin Customer Name' if f.object.new_record? || f.object.customer_id == Customer::WALKIN_CUSTOMER_ID
       f.input :previous_balance, input_html: { readonly: true }
       f.input :bag_category, label: 'Category', selected: BagCategory::FOUJI_BAG_CATEGORY_ID, include_blank: false
       f.input :order_date, as: :datepicker,
@@ -99,7 +99,7 @@ ActiveAdmin.register Order do
     f.inputs 'Order Items' do
       f.has_many :order_items, heading: true, allow_destroy: true, new_record: true do |a|
         a.input :bag_size, as: :select, collection: BagSize.sizes_options
-        a.input :rate, label: "Rate (Rs)", input_html: { onkeyup: 'calculateAmount(this)' }
+        a.input :rate, label: "Rate (Rs)", input_html: { onkeyup: 'calculateAmount(this)', value: a.object.new_record? ? Configuration.default_sale_date : a.object.rate }
         a.input :weight, label: "Weight (KG)", input_html: { value: 20, onkeyup: 'calculateAmount(this)' }
         a.input :quantity, label: "Quantity", input_html: { onkeyup: 'calculateAmount(this)' }
         a.input :amount, label: "Amount (Rs)", input_html: { readonly: true }
