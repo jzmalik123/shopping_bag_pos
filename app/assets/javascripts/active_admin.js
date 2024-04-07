@@ -1,4 +1,5 @@
 //= require active_admin/base
+//= require active_admin/searchable_select
 
 function calculateAmount(field) {
   arr = $(field).attr('id').split('_')
@@ -37,21 +38,14 @@ function updateRemainingBalance(field){
 }
 
 $(document).ready(function() {
+  getCustomerPreviousBalance()
   $('#order_customer_id').on("change", function(){
     if($(this).val() == 1){
       $('#order_customer_name_input').show()
     }else{
       $('#order_customer_name_input').hide()
     }
-
-    $.ajax({
-      url: `/admin/customers/${$(this).val()}/previous_balance`,
-      method: 'GET',
-      dataType: 'json',
-      success: function(response) {
-        $('#order_previous_balance').val(response['balance'])
-      }
-    });
+    getCustomerPreviousBalance()
   })
 
   $('#payment_source_id').on("change", function(){
@@ -59,4 +53,15 @@ $(document).ready(function() {
     $('#payment_previous_balance').val(balance)
     $('#payment_source_type').val($(this).find('option:selected').data("source-type"))
   })
+
+  function getCustomerPreviousBalance(){
+    $.ajax({
+      url: `/admin/customers/${$('#order_customer_id').val()}/previous_balance`,
+      method: 'GET',
+      dataType: 'json',
+      success: function(response) {
+        $('#order_previous_balance').val(response['balance'])
+      }
+    });
+  }
 })

@@ -1,4 +1,8 @@
 ActiveAdmin.register OrderItem do
+
+  filter :customer, as: :searchable_select, collection: Customer.all
+  filter :created_at
+
   index do
     column "Customer Name" do |order_item|
       order_item.order.customer.name

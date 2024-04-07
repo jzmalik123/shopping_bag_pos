@@ -82,6 +82,23 @@ ActiveAdmin.register Order do
     active_admin_comments_for(resource)
   end
 
+  index do
+    panel "Summary" do
+      h3 "Total Weight: #{orders.sum(&:total_weight)} KG"
+      h3 "Total Bags: #{OrderItem.where(order_id: orders.pluck(:id)).sum(&:quantity)}"
+      h3 "Total Amount: #{number_with_delimiter orders.sum(&:total_amount)} Rs"
+    end
+    column :id
+    column :customer
+    column :bag_category
+    column :payment_method
+    column :order_date
+    column :total_amount
+    column :received_amount
+    column :total_weight
+    actions
+  end
+
   form do |f|
     f.inputs 'Order Details' do
       f.input :customer, as: :searchable_select, label: 'Customer Name', selected: f.object.new_record? ? Customer::WALKIN_CUSTOMER_ID : f.object.customer_id, include_blank: false
