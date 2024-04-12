@@ -89,12 +89,14 @@ ActiveAdmin.register Order do
       h3 "Total Amount: #{number_with_delimiter orders.sum(&:total_amount)} Rs"
     end
     column :id
-    column :customer
     column :bag_category
-    column :payment_method
     column :order_date
+    column :customer
+    column :total_bags do |order| order.order_items.sum(&:quantity) end
+    column :payment_method
     column :total_amount
     column :received_amount
+    column :remaining_balance do |order| order.total_amount - order.received_amount end
     column :total_weight
     actions
   end
@@ -103,7 +105,7 @@ ActiveAdmin.register Order do
     f.inputs 'Order Details' do
       f.input :customer, as: :searchable_select, label: 'Customer Name', selected: f.object.new_record? ? Customer::WALKIN_CUSTOMER_ID : f.object.customer_id, include_blank: false
       f.input :customer_name, label: 'Walkin Customer Name' if f.object.new_record? || f.object.customer_id == Customer::WALKIN_CUSTOMER_ID
-      f.input :previous_balance, input_html: { readonly: true }
+      f.input :previous_balance, input_html: { readonly: true, value: f.object.new_record? ? '' : f.object.customer.balance - (f.object.total_amount - f.object.received_amount) }
       f.input :bag_category, label: 'Category', selected: BagCategory::FOUJI_BAG_CATEGORY_ID, include_blank: false
       f.input :order_date, as: :datepicker,
                     input_html: { value: Date.today },
@@ -128,6 +130,7 @@ ActiveAdmin.register Order do
       f.input :received_amount, input_html: { onkeyup: 'updateRemainingBalance(this)' }
       f.input :total_weight, input_html: { readonly: true }
       f.input :remaining_balance, input_html: { readonly: true }
+      f.input :total_quantity, input_html: { readonly: true, value: f.object.new_record? ? '' : f.object.order_items.sum(&:total_weight) }, label: 'Total Bags'
     end
 
     f.actions

@@ -9,4 +9,9 @@ class OrderItem < ApplicationRecord
   def self.ransackable_scopes(_auth_object = nil)
     [:customer]
   end
+
+  def total_weight
+    weight * quantity
+  end
+
 end

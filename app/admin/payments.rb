@@ -38,37 +38,11 @@ ActiveAdmin.register Payment do
       end
       redirect_to(admin_payments_path) and return 
     end
-    
-    # # def update
-    # #   params.permit!
-    # #   @order = Order.find(params[:id])
-    # #   if @order.update(params[:order])
-    # #     @order.customer.update!(balance: params[:order][:remaining_balance]) if @order.customer_id != Customer::WALKIN_CUSTOMER_ID
-    # #     render pdf: "#{@order.id}",
-    # #             page_size: 'A4',
-    # #             template: "invoices/invoice",
-    # #             orientation: "Portrait",
-    # #             lowquality: true,
-    # #             zoom: 1,
-    # #             dpi: 75,
-    # #             locals: {
-    # #               order: @order,
-    # #               order_items: Order.last.order_items.group_by(&:bag_size_id),
-    # #               previous_balance: params[:order][:previous_balance],
-    # #               customer_name: @order.customer_id == Customer::WALKIN_CUSTOMER_ID ? params[:order][:customer_name] : @order.customer.name
-    # #             } and return
-    # #   else
-    # #     flash[:notice] = 'Order cant be saved. Try again'
-    # #   end
-    # end
 
-    # def destroy
-    #   @order = Order.find(params[:id])
-    #   @order.destroy
-    #   @order.customer.update(balance: @order.customer.balance + @order.received_amount - @order.total_amount)
-    #   flash[:notice] = 'Order is deleted'
-    #   redirect_to(admin_orders_path) and return 
-    # end
+    def permitted_params
+      params.permit!
+    end
+    
   end
 
   form do |f|
@@ -77,9 +51,9 @@ ActiveAdmin.register Payment do
         {
           'Customers' => Customer.all.map{|customer| [ customer.name, customer.id, { data: { balance: customer.balance, source_type: 'Customer' } }] },
           'Vendors' => Vendor.all.map{|vendor| [vendor.name, vendor.id, { data: { balance: vendor.balance, source_type: 'Vendor' } }] }
-        }
+        }, [f.object.source_id, f.object.source_type]
       ), label: 'Name'
-      f.input :source_type, as: :hidden
+      f.input :source_type, as: :hidden, value: f.object.new_record? ? '' : f.object.source.class.name
       f.input :payment_type, label: 'Payment Type', include_blank: false
       f.input :previous_balance, label: 'Previous Balance', input_html: { readonly: true }
       f.input :amount, label: 'Payment Amount'
