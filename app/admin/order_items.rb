@@ -13,7 +13,18 @@ ActiveAdmin.register OrderItem do
     end
     column :bag_size do |order_item| order_item.bag_size.size end
     column :rate
-    column :weight
+    column :weight do |order_item| order_item.total_weight end
+    column :quantity
+    column :amount
+  end
+
+  csv do
+    column :id
+    column :order_date do |order_item| order_item.order.order_date end
+    column :customer_name do |order_item| order_item.order.customer.name end
+    column :bag_size do |order_item| order_item.bag_size.size end
+    column :rate
+    column :total_weight do |order_item| order_item.total_weight end
     column :quantity
     column :amount
   end

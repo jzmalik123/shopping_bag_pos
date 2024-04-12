@@ -14,4 +14,12 @@ ActiveAdmin.register Expense do
     end
     f.actions
   end
+
+  csv do
+    column :id
+    column :expense_date
+    column :name
+    column :amount
+    column :updated_at
+  end
 end

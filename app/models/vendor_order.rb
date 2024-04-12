@@ -1,6 +1,4 @@
 class VendorOrder < ApplicationRecord
-  extend Enumerize
-  enumerize :payment_method, in: [:cash, :bank_alfalah, :bank_meezan]
   
   attr_accessor :previous_balance, :remaining_balance, :customer_name
 

@@ -15,5 +15,12 @@ ActiveAdmin.register Customer do
     column :balance
     actions
   end
+
+  csv do
+    column :id
+    column :name
+    column :balance
+    column :updated_at
+  end
   #searchable_select_options(name: :all, scope: Customer.all.order('name ASC'), text_attribute: :name)
 end

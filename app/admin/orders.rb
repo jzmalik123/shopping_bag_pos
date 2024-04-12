@@ -15,10 +15,10 @@ ActiveAdmin.register Order do
                 orientation: "Portrait",
                 lowquality: true,
                 zoom: 1,
-                dpi: 75,
+                dpi: 100,
                 locals: {
                   order: @order,
-                  order_items: Order.last.order_items.group_by(&:bag_size_id),
+                  order_items: @order.order_items.group_by(&:bag_size_id),
                   previous_balance: params[:order][:previous_balance],
                   customer_name: @order.customer_id == Customer::WALKIN_CUSTOMER_ID ? params[:order][:customer_name] : @order.customer.name
                 } and return
@@ -41,7 +41,7 @@ ActiveAdmin.register Order do
                 dpi: 75,
                 locals: {
                   order: @order,
-                  order_items: Order.last.order_items.group_by(&:bag_size_id),
+                  order_items: @order.order_items.group_by(&:bag_size_id),
                   previous_balance: params[:order][:previous_balance],
                   customer_name: @order.customer_id == Customer::WALKIN_CUSTOMER_ID ? params[:order][:customer_name] : @order.customer.name
                 } and return
@@ -93,12 +93,25 @@ ActiveAdmin.register Order do
     column :order_date
     column :customer
     column :total_bags do |order| order.order_items.sum(&:quantity) end
-    column :payment_method
+    column :total_weight
     column :total_amount
     column :received_amount
     column :remaining_balance do |order| order.total_amount - order.received_amount end
-    column :total_weight
+    column :payment_method
     actions
+  end
+
+  csv do
+    column :id
+    column :bag_category do |order| order.bag_category.name end
+    column :order_date
+    column :customer do |order| order.customer.name end
+    column :total_bags do |order| order.order_items.sum(&:quantity) end
+    column :total_weight
+    column :total_amount
+    column :received_amount
+    column :remaining_balance do |order| order.total_amount - order.received_amount end
+    column :payment_method
   end
 
   form do |f|

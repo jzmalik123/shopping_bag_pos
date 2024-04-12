@@ -68,13 +68,23 @@ ActiveAdmin.register VendorOrder do
       h3 "Total Amount: #{number_with_delimiter vendor_orders.sum(&:total_amount)} Rs"
     end
     column :id
-    column :vendor
-    column :payment_method
     column :order_date
+    column :vendor
     column :total_amount
     column :paid_amount do |vendor_order| vendor_order.received_amount end
     column :total_bags do |vendor_order| vendor_order.vendor_order_items.sum(:quantity) end 
+    column :payment_method
     actions
+  end
+
+  csv do
+    column :id
+    column :order_date
+    column :vendor do |vendor_order| vendor_order.vendor.name end
+    column :total_amount
+    column :paid_amount do |vendor_order| vendor_order.received_amount end
+    column :total_bags do |vendor_order| vendor_order.vendor_order_items.sum(:quantity) end 
+    column :payment_method
   end
 
   form do |f|
