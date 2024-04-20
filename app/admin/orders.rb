@@ -6,6 +6,7 @@ ActiveAdmin.register Order do
 
     def create
       params.permit!
+      debugger
       @order = Order.new(params[:order])
       if @order.save
         @order.customer.update!(balance: params[:order][:remaining_balance]) if @order.customer_id != Customer::WALKIN_CUSTOMER_ID
@@ -92,6 +93,7 @@ ActiveAdmin.register Order do
     column :bag_category
     column :order_date
     column :customer
+    column :created_by
     column :total_bags do |order| order.order_items.sum(&:quantity) end
     column :total_weight
     column :total_amount
@@ -116,6 +118,7 @@ ActiveAdmin.register Order do
 
   form do |f|
     f.inputs 'Order Details' do
+      f.input :created_by_id, as: :hidden, input_html: { value: current_admin_user.id }
       f.input :customer, as: :searchable_select, label: 'Customer Name', selected: f.object.new_record? ? Customer::WALKIN_CUSTOMER_ID : f.object.customer_id, include_blank: false
       f.input :customer_name, label: 'Walkin Customer Name' if f.object.new_record? || f.object.customer_id == Customer::WALKIN_CUSTOMER_ID
       f.input :previous_balance, input_html: { readonly: true, value: f.object.new_record? ? '' : f.object.customer.balance - (f.object.total_amount - f.object.received_amount) }
