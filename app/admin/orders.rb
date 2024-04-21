@@ -6,7 +6,6 @@ ActiveAdmin.register Order do
 
     def create
       params.permit!
-      debugger
       @order = Order.new(params[:order])
       if @order.save
         @order.customer.update!(balance: params[:order][:remaining_balance]) if @order.customer_id != Customer::WALKIN_CUSTOMER_ID
