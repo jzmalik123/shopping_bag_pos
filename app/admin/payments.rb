@@ -39,6 +39,41 @@ ActiveAdmin.register Payment do
       redirect_to(admin_payments_path) and return 
     end
 
+    def update
+      params.permit!
+      @payment = Payment.find(params[:id])
+      if @payment.update(params[:payment])
+        payment_source = @payment.source
+        if payment_source.is_a?(Customer)
+          payment_source = @payment.source
+          if @payment.payment_type.incoming?
+            payment_source.update(balance: payment_source.balance - @payment.amount)
+          else
+            payment_source.update(balance: payment_source.balance + @payment.amount)
+          end
+          render pdf: "Invoice #{@payment.id}",
+            page_size: 'A4',
+            template: "invoices/payment_invoice",
+            orientation: "Portrait",
+            lowquality: true,
+            zoom: 1,
+            dpi: 75,
+            locals: {
+              payment: @payment
+            } and return
+        elsif payment_source.is_a?(Vendor)
+          if @payment.payment_type.incoming?
+            payment_source.update(balance: payment_source.balance + @payment.amount)
+          else
+            payment_source.update(balance: payment_source.balance - @payment.amount)
+          end
+        end
+      else
+        flash[:notice] = 'Payment cant be saved. Try again'
+      end
+      redirect_to(admin_payments_path) and return 
+    end
+
     def permitted_params
       params.permit!
     end
