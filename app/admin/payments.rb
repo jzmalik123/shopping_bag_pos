@@ -47,9 +47,9 @@ ActiveAdmin.register Payment do
         if payment_source.is_a?(Customer)
           payment_source = @payment.source
           if @payment.payment_type.incoming?
-            payment_source.update(balance: payment_source.balance - @payment.amount)
+            payment_source.update(balance: @payment.previous_balance - @payment.amount)
           else
-            payment_source.update(balance: payment_source.balance + @payment.amount)
+            payment_source.update(balance:  @payment.previous_balance + @payment.amount)
           end
           render pdf: "Invoice #{@payment.id}",
             page_size: 'A4',
@@ -63,9 +63,9 @@ ActiveAdmin.register Payment do
             } and return
         elsif payment_source.is_a?(Vendor)
           if @payment.payment_type.incoming?
-            payment_source.update(balance: payment_source.balance + @payment.amount)
+            payment_source.update(balance:  @payment.previous_balance + @payment.amount)
           else
-            payment_source.update(balance: payment_source.balance - @payment.amount)
+            payment_source.update(balance:  @payment.previous_balance - @payment.amount)
           end
         end
       else
