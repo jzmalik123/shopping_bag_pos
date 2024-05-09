@@ -8,7 +8,7 @@ ActiveAdmin.register Customer do
 
   index do
     panel "Summary" do
-      h3 "Total Balance: #{number_with_delimiter customers.sum(&:balance) rescue 0} Rs"
+      h3 "Total Balance: #{number_with_delimiter Customer.all.sum(&:balance) rescue 0} Rs"
     end
     column :id
     column :name

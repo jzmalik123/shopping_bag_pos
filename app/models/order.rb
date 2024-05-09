@@ -11,4 +11,8 @@ class Order < ApplicationRecord
 
   accepts_nested_attributes_for :order_items
 
+  def fouji_bag_order?
+    self.bag_category.id == BagCategory::FOUJI_BAG_CATEGORY_ID
+  end
+
 end

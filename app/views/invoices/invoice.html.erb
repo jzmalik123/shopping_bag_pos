@@ -31,7 +31,7 @@
         <div class="row" style="font-size: 16px;">
           <div class="col-xs-6">
             <address style="margin-bottom: 10px;">
-              <strong>Billed To:</strong> <%= @order.customer.name %><br>
+              <strong>Billed To:</strong> <%= @order.customer.name %> <%= @order.bag_category.name if @order.fouji_bag_order? %> <br>
             </address>
           </div>
           <div class="col-xs-6 text-right">
