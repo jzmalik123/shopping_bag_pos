@@ -25,7 +25,7 @@
       <div class="col-xs-12">
         <div class="invoice-title">
           <img src="<%= image_url('logo_with_tagline') %>" width="400" style="margin-left: 25%;">
-          <h2 class="pull-right">Order # <%= @order.id %></h2>
+          <h2 class="pull-right">Order # <br><%= @order.id %></h2>
         </div>
         <hr style="margin: 7px 0px;">
         <div class="row" style="font-size: 16px;">
@@ -89,20 +89,20 @@
                     <td class="thick-line"></td>
                     <td class="thick-line"></td>
                     <td class="thick-line text-center"><strong>Pre. Balance</strong></td>
-                    <td class="thick-line text-right"><%= number_with_delimiter previous_balance %></td>
+                    <td class="thick-line text-right" style="font-size: 16px;"><%= number_with_delimiter previous_balance %></td>
                     <td class="thick-line"></td>
                   </tr>
                   <tr>
                     <td class="no-line"></td>
                     <td class="no-line"></td>
                     <td class="no-line text-center"><strong>Received Amount</strong></td>
-                    <td class="no-line text-right"><%= number_with_delimiter order.received_amount %></td>
+                    <td class="no-line text-right" style="font-size: 16px;"><%= number_with_delimiter order.received_amount %></td>
                   </tr>
                   <tr>
                     <td class="no-line"></td>
                     <td class="no-line"></td>
                     <td class="no-line text-center"><strong>Amount Remaining</strong></td>
-                    <td class="no-line text-right"><%= number_with_delimiter order.customer.balance %></td>
+                    <td class="no-line text-right" style="font-size: 16px;"><strong><%= number_with_delimiter order.customer.balance %></strong></td>
                   </tr>
                 </tbody>
               </table>
