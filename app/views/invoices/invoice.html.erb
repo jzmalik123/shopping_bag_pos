@@ -73,7 +73,7 @@
                       <td class="text-center"><%= bag_size.size %></td>
                       <% order_item = order_items[bag_size.id]&.first %>
                       <td class="text-center"><%= order_item&.weight %></td>
-                      <td class="text-center"><%= order_item&.quantity %></td>
+                      <td class="text-center"><%= order_item&.total_bags %></td>
                       <td class="text-center"><%= number_with_delimiter order_item&.rate %></td>
                       <td class="text-center"><%= number_with_delimiter order_item&.amount %></td>
                     </tr>
