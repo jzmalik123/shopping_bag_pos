@@ -50,7 +50,7 @@ ActiveAdmin.register_page "Dashboard" do
       
       column do
         panel "Today's Sold Number of Bags" do
-          h1 "#{OrderItem.joins(:order).where("orders.order_date = ?", Date.today).sum(:quantity)}"
+          h1 "#{Order.where("order_date = ?", Date.today).sum(&:total_bags)}"
         end
       end
     end

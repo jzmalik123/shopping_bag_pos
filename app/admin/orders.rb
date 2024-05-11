@@ -86,7 +86,7 @@ ActiveAdmin.register Order do
   index do
     panel "Summary" do
       h3 "Total Weight: #{orders.sum(&:total_weight)} KG"
-      h3 "Total Bags: #{OrderItem.where(order_id: orders.pluck(:id)).sum(&:quantity)}"
+      h3 "Total Bags: #{orders.sum(&:total_bags)} KG"
       h3 "Total Amount: #{number_with_delimiter orders.sum(&:total_amount)} Rs"
     end
     column :id
