@@ -14,4 +14,8 @@ class OrderItem < ApplicationRecord
     weight * quantity
   end
 
+  def total_bags
+    (total_weight / 20).f
+  end
+
 end

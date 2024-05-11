@@ -94,7 +94,7 @@ ActiveAdmin.register Order do
     column :order_date
     column :customer
     column :created_by
-    column :total_bags do |order| order.order_items.sum(&:quantity) end
+    column :total_bags do |order| order.total_bags end
     column :total_weight
     column :total_amount
     column :received_amount
@@ -108,7 +108,7 @@ ActiveAdmin.register Order do
     column :bag_category do |order| order.bag_category.name end
     column :order_date
     column :customer do |order| order.customer.name end
-    column :total_bags do |order| order.order_items.sum(&:quantity) end
+    column :total_bags do |order| order.total_bags end
     column :total_weight
     column :total_amount
     column :received_amount

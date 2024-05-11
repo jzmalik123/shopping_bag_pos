@@ -15,4 +15,8 @@ class Order < ApplicationRecord
     self.bag_category.id == BagCategory::FOUJI_BAG_CATEGORY_ID
   end
 
+  def total_bags
+    self.order_items.sum(&:total_bags)
+  end
+
 end

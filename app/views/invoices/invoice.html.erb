@@ -81,7 +81,7 @@
                   <tr>
                     <td class="text-center">Totals</td>
                     <td class="text-center"><strong><%= order.total_weight %> (KG)</strong></td>
-                    <td class="text-center"><strong><%= order.order_items.sum(:quantity) %></strong></td>
+                    <td class="text-center"><strong><%= order.total_bags %></strong></td>
                     <td class="text-center"></td>
                     <td class="text-center"><strong><%= number_with_delimiter order.order_items.sum(:amount) %></strong></td>
                   </tr>
