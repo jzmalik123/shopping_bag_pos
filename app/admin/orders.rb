@@ -1,6 +1,7 @@
 ActiveAdmin.register Order do
 
   permit_params :customer_id, :previous_balance, :bag_category_id, :order_date, :payment_method, :total_amount, :received_amount, :total_weight, :remaining_balance, order_items_attributes: [:id, :bag_size_id, :rate, :weight, :quantity, :amount, :_destroy]
+  config.paginate = false
 
   controller do
 
@@ -123,10 +124,7 @@ ActiveAdmin.register Order do
       f.input :previous_balance, input_html: { readonly: true, value: f.object.new_record? ? '' : f.object.customer.balance - (f.object.total_amount - f.object.received_amount) }
       f.input :bag_category, label: 'Category', selected: BagCategory::FOUJI_BAG_CATEGORY_ID, include_blank: false
       f.input :order_date, as: :datepicker,
-                    input_html: { value: Date.today },
-                    datepicker_options: {
-                      max_date: Date.today
-                    }
+                    input_html: { value: Date.today }
       f.input :payment_method, label: 'Payment Method', selected: 'cash', include_blank: false
     end
 

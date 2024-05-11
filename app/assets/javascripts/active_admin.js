@@ -44,9 +44,27 @@ if(window.location.href.search('admin/orders') != -1){
   
   $(document).ready(function() {
 
+    function getConfigurationValue(configuration_key){
+      debugger
+      $.ajax({
+        url: `/admin/configurations/get_value/default_sale_rate_${configuration_key}`,
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+          debugger
+          $('#order_previous_balance').val(response['balance'])
+        }
+      });
+    }
+
     if(!window.location.href.search('edit')){
       getCustomerPreviousBalance()
+    } else {
+      selected_bag = $('#order_bag_category_id').find('option:selected').html()
+      selected_bag = selected_bag.replaceAll(' ','_').toLowerCase()
+      getConfigurationValue(selected_bag)
     }
+
     $('#order_customer_id').on("change", function(){
       if($(this).val() == 1){
         $('#order_customer_name_input').show()

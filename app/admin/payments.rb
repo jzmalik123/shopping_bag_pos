@@ -93,10 +93,7 @@ ActiveAdmin.register Payment do
       f.input :previous_balance, label: 'Previous Balance', input_html: { readonly: true }
       f.input :amount, label: 'Payment Amount'
       f.input :payment_date, as: :datepicker,
-                    input_html: { value: Date.today },
-                    datepicker_options: {
-                      max_date: Date.today
-                    }
+                    input_html: { value: Date.today }
       f.input :payment_method, label: 'Payment Method', selected: 'cash', include_blank: false
     end
 

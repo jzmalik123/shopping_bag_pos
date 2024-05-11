@@ -1,6 +1,7 @@
 ActiveAdmin.register VendorOrder do
 
   permit_params :id, :vendor_id, :previous_balance, :order_date, :payment_method, :total_amount, :received_amount, :total_weight, :remaining_balance, vendor_order_items_attributes: [:id, :rate, :weight, :quantity, :amount, :_destroy]
+  config.paginate = false
 
   controller do
 
@@ -92,10 +93,7 @@ ActiveAdmin.register VendorOrder do
       f.input :vendor, as: :searchable_select, label: 'Vendor Name'#, include_blank: false
       f.input :previous_balance, input_html: { readonly: true }
       f.input :order_date, as: :datepicker,
-                    input_html: { value: Date.today },
-                    datepicker_options: {
-                      max_date: Date.today
-                    }
+                    input_html: { value: Date.today }
       f.input :payment_method, label: 'Payment Method', selected: 'cash', include_blank: false
     end
 
@@ -103,7 +101,7 @@ ActiveAdmin.register VendorOrder do
       f.has_many :vendor_order_items, heading: true, allow_destroy: true, new_record: true do |a|
         a.input :item_name, label: "Item Name"
         a.input :rate, label: "Unit Price (Rs)", input_html: { onkeyup: 'calculateAmount(this)' }
-        a.input :weight, label: "Weight (KG)"
+        a.input :weight, label: "Weight (KG)", input_html: { value: 25 }
         a.input :quantity, label: "Quantity", input_html: { onkeyup: 'calculateAmount(this)' }
         a.input :amount, label: "Amount (Rs)", input_html: { readonly: true }
       end
