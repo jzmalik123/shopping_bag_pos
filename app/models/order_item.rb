@@ -15,7 +15,7 @@ class OrderItem < ApplicationRecord
   end
 
   def total_bags
-    (total_weight / 20).to_f
+    (total_weight.to_f / 20).to_f
   end
 
 end
