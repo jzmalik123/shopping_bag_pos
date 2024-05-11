@@ -4,8 +4,8 @@ ActiveAdmin.register_page "Dashboard" do
 
   # Custom page content
   content title: 'Todays Data' do
-    @total_received_amount = Order.where('order_date >= ?', Time.zone.now.beginning_of_day).sum(&:received_amount)
-    @total_received_payments = Payment.with_payment_type(:incoming).where('payment_date >= ?', Time.zone.now.beginning_of_day).sum(:amount)
+    @total_received_amount = Order.where('order_date = ?', Date.today).sum(&:received_amount)
+    @total_received_payments = Payment.with_payment_type(:incoming).where('payment_date = ?', Date.today).sum(:amount)
     columns do
       column do
         panel '' do
@@ -44,13 +44,13 @@ ActiveAdmin.register_page "Dashboard" do
     columns do
       column do
         panel "Total Weight Sold" do
-          h1 "#{number_with_delimiter Order.where('order_date >= ?', Time.zone.now.beginning_of_day).sum(&:total_weight)} KG"
+          h1 "#{number_with_delimiter Order.where('order_date = ?', Date.today).sum(&:total_weight)} KG"
         end
       end
       
       column do
         panel "Today's Sold Number of Bags" do
-          h1 "#{OrderItem.joins(:order).where("orders.order_date > ?", Time.zone.now.beginning_of_day).sum(:quantity)}"
+          h1 "#{OrderItem.joins(:order).where("orders.order_date = ?", Date.today).sum(:quantity)}"
         end
       end
     end
