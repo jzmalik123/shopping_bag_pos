@@ -132,7 +132,7 @@ ActiveAdmin.register Order do
       f.has_many :order_items, heading: true, allow_destroy: true, new_record: true do |a|
         a.input :bag_size, as: :select, collection: BagSize.sizes_options
         a.input :rate, label: "Rate (Rs)", input_html: { onkeyup: 'calculateAmount(this)', value: a.object.new_record? ? Configuration.default_sale_date : a.object.rate }
-        a.input :weight, label: "Weight (KG)", input_html: { value: f.object.new_record? ? 20 : a.weight, onkeyup: 'calculateAmount(this)' }
+        a.input :weight, label: "Weight (KG)", input_html: { value: f.object.new_record? ? 20 : a.object.weight, onkeyup: 'calculateAmount(this)' }
         a.input :quantity, label: "Quantity", input_html: { onkeyup: 'calculateAmount(this)' }
         a.input :amount, label: "Amount (Rs)", input_html: { readonly: true }
       end
