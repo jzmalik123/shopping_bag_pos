@@ -16,6 +16,43 @@ ActiveAdmin.register Customer do
     actions
   end
 
+  show do
+    attributes_table do
+      row :name
+      row :mobile_number
+      row :balance
+      row :created_at do |customer|
+        customer.created_at.strftime("%B %d, %Y %H:%M")
+      end
+      row :updated_at do |customer|
+        customer.updated_at.strftime("%B %d, %Y %H:%M")
+      end
+    end
+
+    panel "Payments" do
+      table_for customer.payments do
+        column "Payment Date", :payment_date do |payment|
+          payment.payment_date.strftime("%B %d, %Y")
+        end
+        column "Payment Method", :payment_method
+        column "Payment Type", :payment_type
+        column "Amount", :amount do |payment|
+          payment.amount
+        end
+        column "Previous Balance", :previous_balance do |payment|
+          payment.previous_balance
+        end
+        column "Created At", :created_at do |payment|
+          payment.created_at.strftime("%B %d, %Y %H:%M")
+        end
+        column "Updated At", :updated_at do |payment|
+          payment.updated_at.strftime("%B %d, %Y %H:%M")
+        end
+      end
+    end
+
+  end
+
   csv do
     column :id
     column :name
