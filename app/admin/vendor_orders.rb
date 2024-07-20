@@ -32,7 +32,7 @@ ActiveAdmin.register VendorOrder do
     def destroy
       @vendor_order = VendorOrder.find(params[:id])
       @vendor_order.destroy
-      @vendor_order.vendor.update(balance: @vendor.vendor.balance - (@vendor_order.total_amount - @vendor_order.received_amount))
+      @vendor_order.vendor.update(balance: @vendor_order.vendor.balance - (@vendor_order.total_amount - @vendor_order.received_amount))
       flash[:notice] = 'Order is deleted'
       redirect_to(admin_vendor_orders_path) and return 
     end
