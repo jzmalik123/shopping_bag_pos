@@ -140,7 +140,7 @@ ActiveAdmin.register Order do
     
     f.inputs 'Order Summary' do
       f.input :total_amount, input_html: { readonly: true }
-      f.input :received_amount, input_html: { onkeyup: 'updateRemainingBalance(this)' }, required: true
+      f.input :received_amount, input_html: { onkeyup: 'updateRemainingBalance(this)', required: true }
       f.input :total_weight, input_html: { readonly: true }
       f.input :remaining_balance, input_html: { readonly: true }
       f.input :total_quantity, input_html: { readonly: true, value: f.object.new_record? ? '' : f.object.order_items.sum(&:total_weight) }, label: 'Total Bags'
