@@ -9,7 +9,7 @@ class Order < ApplicationRecord
   belongs_to :bag_category
   belongs_to :created_by, class_name: 'AdminUser'
 
-  validates :remaining_balance, presence: true
+  validates :received_amount, presence: true
   accepts_nested_attributes_for :order_items
 
   def fouji_bag_order?
