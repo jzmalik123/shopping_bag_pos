@@ -22,6 +22,7 @@ ActiveAdmin.register Expense do
     column :name
     column :amount
     column :updated_at
+    actions
   end
 
   csv do
