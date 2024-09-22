@@ -68,15 +68,19 @@
                 </thead>
                 <tbody>
                   <!-- Replace the static table rows with dynamic ones from your Rails variables -->
-                  <% BagSize.all.each do |bag_size| %>
-                    <tr>
-                      <td class="text-center"><%= bag_size.size %></td>
-                      <% order_item = order_items[bag_size.id]&.first %>
-                      <td class="text-center"><%= order_item&.weight %></td>
-                      <td class="text-center"><%= order_item&.total_bags %></td>
-                      <td class="text-center"><%= number_with_delimiter order_item&.rate %></td>
-                      <td class="text-center"><%= number_with_delimiter order_item&.amount %></td>
-                    </tr>
+                  <% @order_items_by_bag_type = @order.order_items.group_by{|order_item| order_item.bag_size.bag_type } %>
+                  <% @order_items_by_bag_type.keys.each do |bag_type| %>
+                    <tr><td colspan="5"><%= bag_type.name %></td></tr>
+                    <% order_items = @order_items_by_bag_type[bag_type] %>
+                    <% order_items.each do |order_item| %>
+                      <tr>
+                        <td class="text-center"><%= order_item.bag_size.size %></td>
+                        <td class="text-center"><%= order_item&.weight %></td>
+                        <td class="text-center"><%= order_item&.total_bags %></td>
+                        <td class="text-center"><%= number_with_delimiter order_item&.rate %></td>
+                        <td class="text-center"><%= number_with_delimiter order_item&.amount %></td>
+                      </tr>
+                    <% end %>
                   <% end %>
                   <tr>
                     <td class="text-center">Totals</td>

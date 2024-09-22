@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_20_160705) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_22_121525) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -45,6 +45,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_20_160705) do
 
   create_table "bag_sizes", force: :cascade do |t|
     t.string "size"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "bag_type_id"
+  end
+
+  create_table "bag_types", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -144,6 +151,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_20_160705) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "bag_sizes", "bag_types"
   add_foreign_key "expenses", "admin_users"
   add_foreign_key "order_items", "bag_sizes"
   add_foreign_key "order_items", "orders", on_delete: :cascade

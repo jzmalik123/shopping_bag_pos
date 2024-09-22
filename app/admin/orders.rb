@@ -42,7 +42,6 @@ ActiveAdmin.register Order do
                 dpi: 75,
                 locals: {
                   order: @order,
-                  order_items: @order.order_items.group_by(&:bag_size_id),
                   previous_balance: params[:order][:previous_balance],
                   customer_name: @order.customer_id == Customer::WALKIN_CUSTOMER_ID ? params[:order][:customer_name] : @order.customer.name
                 } and return

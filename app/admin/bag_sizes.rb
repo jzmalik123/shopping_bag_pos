@@ -5,7 +5,7 @@ ActiveAdmin.register BagSize do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  permit_params :size
+  permit_params :size, :bag_type, :bag_type_id
   #
   # or
   #
@@ -15,4 +15,11 @@ ActiveAdmin.register BagSize do
   #   permitted
   # end
   
+  form do |f|
+    f.inputs 'Bag Size' do
+      f.input :size, label: 'Size'
+      f.input :bag_type, as: :select, label: 'Bag Type', include_blank: false
+    end
+    f.actions
+  end
 end
