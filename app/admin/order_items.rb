@@ -1,9 +1,16 @@
 ActiveAdmin.register OrderItem do
 
   filter :customer, as: :searchable_select, collection: Customer.all
+  filter :bag_type, as: :searchable_select, collection: BagType.all
   filter :created_at
 
   index do
+    panel "Summary" do
+      h3 "Total Weight: #{order_items.sum(&:total_weight)} KG"
+      h3 "Total Bags: #{order_items.sum(&:total_bags)} KG"
+      h3 "Total Amount: #{number_with_delimiter order_items.sum(&:total_amount)} Rs"
+    end
+
     column "Order" do |order_item|
       link_to order_item.order.id, admin_order_path(order_item.order)
     end
