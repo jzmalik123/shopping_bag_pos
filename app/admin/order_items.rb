@@ -1,7 +1,7 @@
 ActiveAdmin.register OrderItem do
 
   filter :customer, as: :searchable_select, collection: Customer.all
-  filter :bag_type, as: :searchable_select, collection: BagType.all
+  filter :bag_type, as: :searchable_select, collection: BagType.all.reverse
   filter :created_at
 
   index do
