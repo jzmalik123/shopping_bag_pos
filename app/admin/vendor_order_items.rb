@@ -4,7 +4,7 @@ ActiveAdmin.register VendorOrderItem do
   filter :created_at
 
   index do
-    column :created_at
+    column :order_date do |order_item| order_item.vendor_order.order_date.strftime("%B %d, %Y") end
     column "Order" do |order_item|
       link_to order_item.vendor_order.id, admin_vendor_order_path(order_item.vendor_order)
     end

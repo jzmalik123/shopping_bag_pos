@@ -10,7 +10,7 @@ ActiveAdmin.register Order do
       @order = Order.new(params[:order])
       if @order.save
         @order.customer.update!(balance: params[:order][:remaining_balance]) if @order.customer_id != Customer::WALKIN_CUSTOMER_ID
-        render pdf: "#{@order.id}",
+        render pdf: "#{@order.id} #{@order.order_date.strftime("%B %d, %Y")} #{@order.customer.name}",
                 page_size: 'A4',
                 template: "invoices/invoice",
                 orientation: "Portrait",
@@ -23,6 +23,7 @@ ActiveAdmin.register Order do
                   previous_balance: params[:order][:previous_balance],
                   customer_name: @order.customer_id == Customer::WALKIN_CUSTOMER_ID ? params[:order][:customer_name] : @order.customer.name
                 } and return
+        
       else
         flash[:notice] = 'Order cant be saved. Try again'
       end
@@ -33,7 +34,7 @@ ActiveAdmin.register Order do
       @order = Order.find(params[:id])
       if @order.update(params[:order])
         @order.customer.update!(balance: params[:order][:remaining_balance]) if @order.customer_id != Customer::WALKIN_CUSTOMER_ID
-        render pdf: "#{@order.id}",
+        render pdf: "#{@order.id} #{@order.order_date.strftime("%B %d, %Y")} #{@order.customer.name}",
                 page_size: 'A4',
                 template: "invoices/invoice",
                 orientation: "Portrait",
@@ -87,6 +88,7 @@ ActiveAdmin.register Order do
       h3 "Total Weight: #{orders.sum(&:total_weight)} KG"
       h3 "Total Bags: #{orders.sum(&:total_bags)} KG"
       h3 "Total Amount: #{number_with_delimiter orders.sum(&:total_amount)} Rs"
+      h3 "Amount per KG: #{number_with_delimiter orders.sum(&:total_amount) / orders.sum(&:total_weight)} Rs"
     end
     column :id
     column :bag_category

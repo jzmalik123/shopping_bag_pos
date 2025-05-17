@@ -32,4 +32,27 @@ ActiveAdmin.register Expense do
     column :amount
     column :updated_at
   end
+
+  controller do
+    def update
+      super do |format|
+        if resource.errors.empty?
+          redirect_to admin_expenses_path, notice: "Expense was successfully updated." and return
+        else
+          render :edit and return
+        end
+      end
+    end
+
+    def create
+      super do |format|
+        if resource.errors.empty?
+          redirect_to admin_expenses_path, notice: "Expense was successfully created." and return
+        else
+          render :new and return
+        end
+      end
+    end
+    
+  end
 end

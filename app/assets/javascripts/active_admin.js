@@ -45,13 +45,11 @@ if(window.location.href.search('admin/orders') != -1){
   $(document).ready(function() {
 
     function getConfigurationValue(configuration_key){
-      debugger
       $.ajax({
         url: `/admin/configurations/get_value/default_sale_rate_${configuration_key}`,
         method: 'GET',
         dataType: 'json',
         success: function(response) {
-          debugger
           $('#order_previous_balance').val(response['balance'])
         }
       });

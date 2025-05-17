@@ -10,7 +10,19 @@ ActiveAdmin.register VendorOrder do
       @vendor_order = VendorOrder.new(params[:vendor_order])
       if @vendor_order.save
         @vendor_order.vendor.update!(balance: params[:vendor_order][:remaining_balance])
-        flash[:success] = 'Vendor order was successfully created'
+        render pdf: "Vendor #{@vendor_order.id} #{@vendor_order.order_date.strftime("%B %d, %Y")} #{@vendor_order.vendor.name}",
+                page_size: 'A4',
+                template: "invoices/vendor_order_invoice",
+                orientation: "Portrait",
+                lowquality: true,
+                zoom: 1,
+                dpi: 100,
+                locals: {
+                  order: @vendor_order,
+                  order_items: @vendor_order.vendor_order_items,
+                  previous_balance: params[:vendor_order][:previous_balance],
+                  customer_name: @vendor_order.vendor.name
+                } and return
       else
         flash[:notice] = 'Order cant be saved. Try again'
       end
@@ -22,7 +34,19 @@ ActiveAdmin.register VendorOrder do
       @vendor_order = VendorOrder.find(params[:id])
       if @vendor_order.update(params[:vendor_order])
         @vendor_order.vendor.update!(balance: params[:vendor_order][:remaining_balance])
-        flash[:success] = 'Vendor order was successfully created'
+        render pdf: "Vendor #{@vendor_order.id} #{@vendor_order.order_date.strftime("%B %d, %Y")} #{@vendor_order.vendor.name}",
+                page_size: 'A4',
+                template: "invoices/vendor_order_invoice",
+                orientation: "Portrait",
+                lowquality: true,
+                zoom: 1,
+                dpi: 100,
+                locals: {
+                  order: @vendor_order,
+                  order_items: @vendor_order.vendor_order_items,
+                  previous_balance: params[:vendor_order][:previous_balance],
+                  customer_name: @vendor_order.vendor.name
+                } and return
       else
         flash[:notice] = 'Order cant be saved. Try again'
       end
@@ -67,6 +91,7 @@ ActiveAdmin.register VendorOrder do
       h3 "Total Weight: #{VendorOrderItem.where(vendor_order_id: vendor_orders.pluck(:id)).sum(&:total_weight)} KG"
       h3 "Total Bags: #{VendorOrderItem.where(vendor_order_id: vendor_orders.pluck(:id)).sum(&:quantity)}"
       h3 "Total Amount: #{number_with_delimiter vendor_orders.sum(&:total_amount)} Rs"
+      h3 "Amount per KG: #{number_with_delimiter vendor_orders.sum(&:total_amount) / VendorOrderItem.where(vendor_order_id: vendor_orders.pluck(:id)).sum(&:total_weight)} Rs"
     end
     column :id
     column :order_date

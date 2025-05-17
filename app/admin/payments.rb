@@ -16,7 +16,7 @@ ActiveAdmin.register Payment do
           else
             payment_source.update(balance: payment_source.balance + @payment.amount)
           end
-          render pdf: "Invoice #{@payment.id}",
+          render pdf: "Invoice #{@payment.id} #{@payment.payment_date.strftime("%B %d, %Y")} #{@payment.source.name}",
             page_size: 'A4',
             template: "invoices/payment_invoice",
             orientation: "Portrait",
@@ -32,6 +32,16 @@ ActiveAdmin.register Payment do
           else
             payment_source.update(balance: payment_source.balance - @payment.amount)
           end
+          render pdf: "Invoice #{@payment.id} #{@payment.payment_date.strftime("%B %d, %Y")} #{@payment.source.name}",
+            page_size: 'A4',
+            template: "invoices/payment_invoice",
+            orientation: "Portrait",
+            lowquality: true,
+            zoom: 1,
+            dpi: 75,
+            locals: {
+              payment: @payment
+            } and return
         end
       else
         flash[:notice] = 'Payment cant be saved. Try again'
@@ -51,7 +61,7 @@ ActiveAdmin.register Payment do
           else
             payment_source.update(balance:  @payment.previous_balance + @payment.amount)
           end
-          render pdf: "Invoice #{@payment.id}",
+          render pdf: "Invoice #{@payment.id} #{@payment.payment_date.strftime("%B %d, %Y")} #{@payment.source.name}",
             page_size: 'A4',
             template: "invoices/payment_invoice",
             orientation: "Portrait",
@@ -72,6 +82,16 @@ ActiveAdmin.register Payment do
         flash[:notice] = 'Payment cant be saved. Try again'
       end
       redirect_to(admin_payments_path) and return 
+    end
+
+    def destroy
+      @payment = Payment.find(params[:id])
+      @payment.destroy
+      if @payment.payment_type.incoming?
+        @payment.source.update(balance: @payment.source.balance - @payment.amount)
+      else
+        @payment.source.update(balance: @payment.source.balance + @payment.amount)
+      end
     end
 
     def permitted_params

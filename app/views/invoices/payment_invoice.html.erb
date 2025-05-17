@@ -47,7 +47,7 @@
       <div class="col-md-12">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title"><strong>Payment Receipt</strong></h3>
+            <h3 class="panel-title"><strong><%= "Vendor " if @payment.source.is_a?(Vendor) %>Payment Receipt</strong></h3>
           </div>
           <div>
             <div class="table-responsive">

@@ -14,4 +14,7 @@ class VendorOrderItem < ApplicationRecord
     weight * quantity
   end
 
+  def total_bags
+    quantity
+  end
 end
