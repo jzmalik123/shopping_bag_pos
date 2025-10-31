@@ -58,7 +58,7 @@
                     <td class="text-center" style="padding: 10 0;"><%= number_with_delimiter payment.previous_balance %></td>
                   </tr>
 									<tr>
-                    <td class="text-center" style="padding: 10 0;">Amount <%= payment.source.is_a?(Vendor) ? "Paid" : "Received" %></td>
+                    <td class="text-center" style="padding: 10 0;"><%= payment.source.is_a?(Vendor) ? "Paid" : "Received" %> Amount</td>
                     <td class="text-center" style="padding: 10 0;"><%= number_with_delimiter payment.amount %></td>
                   </tr>
 									<tr>
