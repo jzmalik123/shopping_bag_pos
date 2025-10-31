@@ -66,15 +66,15 @@
                   <% @order_items = @vendor_order.vendor_order_items %>
                     <% @order_items.each do |order_item| %>
                       <tr>
-                        <td class="text-center" style="font-size: 18px;"><%= order_item.item_name %></td>
-                        <td class="text-center" style="font-size: 18px;"><%= order_item&.weight %></td>
-                        <td class="text-center" style="font-size: 18px;"><%= order_item&.total_bags %></td>
-                        <td class="text-center" style="font-size: 18px;"><%= number_with_delimiter order_item&.rate %></td>
-                        <td class="text-center" style="font-size: 18px;"><%= number_with_delimiter order_item&.amount %></td>
+                        <td class="text-center"><%= order_item.item_name %></td>
+                        <td class="text-center"><%= order_item&.weight %></td>
+                        <td class="text-center"><%= order_item&.total_bags %></td>
+                        <td class="text-center"><%= number_with_delimiter order_item&.rate %></td>
+                        <td class="text-center"><%= number_with_delimiter order_item&.amount %></td>
                       </tr>
                   <% end %>
                   <tr>
-                    <td class="text-center"><strong>Totals</strong></td>
+                    <td class="text-center">Totals</td>
                     <td class="text-center"><strong><%= order.total_weight %> (KG)</strong></td>
                     <td class="text-center"><strong><%= order.total_bags %></strong></td>
                     <td class="text-center"></td>
@@ -90,7 +90,7 @@
                   <tr>
                     <td class="no-line"></td>
                     <td class="no-line"></td>
-                    <td class="no-line text-center"><strong>Amount Paid</strong></td>
+                    <td class="no-line text-center"><strong>Received Amount</strong></td>
                     <td class="no-line text-right" style="font-size: 16px;"><%= number_with_delimiter order.received_amount %></td>
                   </tr>
                   <tr>
