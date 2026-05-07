@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: #111827;
+    }
+
+    .header {
+      margin-bottom: 12px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 0 4px;
+    }
+
+    .subtitle {
+      margin: 0 0 2px;
+      color: #334155;
+    }
+
+    .opening-balance {
+      margin: 10px 0 14px;
+      font-weight: 700;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #d1d5db;
+      padding: 7px 8px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f3f4f6;
+      font-weight: 700;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .balance {
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <% customer = ledger_data[:selected_customer] %>
+  <% start_date = ledger_data[:start_date] %>
+  <% end_date = ledger_data[:end_date] %>
+  <% opening_balance = ledger_data[:opening_balance] %>
+  <% rows = ledger_data[:ledger_rows] %>
+
+  <div class="header">
+    <p class="title">Customer Ledger</p>
+    <p class="subtitle"><strong>Customer:</strong> <%= customer.name %></p>
+    <p class="subtitle"><strong>Date Range:</strong> <%= start_date.strftime("%d %b %Y") %> - <%= end_date.strftime("%d %b %Y") %></p>
+    <p class="opening-balance">Opening Balance: <%= number_with_delimiter(opening_balance.round(2)) %></p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th class="text-right">ID</th>
+        <th class="text-right">KG</th>
+        <th class="text-right">Amount</th>
+        <th class="text-right">Amount Received</th>
+        <th class="text-right">Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if rows.empty? %>
+        <tr>
+          <td colspan="7" class="text-center">No transactions found for selected range.</td>
+        </tr>
+      <% else %>
+        <% rows.each do |row| %>
+          <tr>
+            <td><%= row[:date].strftime("%d-%b") %></td>
+            <td><%= row[:type] %></td>
+            <td class="text-right"><%= number_with_delimiter(row[:id]) %></td>
+            <td class="text-right"><%= row[:kg].present? ? number_with_delimiter(row[:kg].round(2)) : "" %></td>
+            <td class="text-right"><%= row[:amount].present? ? number_with_delimiter(row[:amount].round(2)) : "" %></td>
+            <td class="text-right"><%= number_with_delimiter(row[:amount_received].to_f.round(2)) %></td>
+            <td class="text-right balance"><%= number_with_delimiter(row[:balance].round(2)) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</body>
+</html>
