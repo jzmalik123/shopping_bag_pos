@@ -5,6 +5,8 @@ ActiveAdmin.register Order do
   config.per_page = 50
 
   controller do
+    before_action :set_default_month_filter, only: :index
+
     def scoped_collection
       super.includes(:customer, :bag_category, :created_by, :order_items)
     end
@@ -61,6 +63,16 @@ ActiveAdmin.register Order do
       @order.customer.update(balance: @order.customer.balance + @order.received_amount - @order.total_amount)
       flash[:notice] = 'Order is deleted'
       redirect_to(admin_orders_path) and return 
+    end
+
+    private
+
+    def set_default_month_filter
+      params[:q] ||= {}
+      return if params[:q][:order_date_gteq].present? || params[:q][:order_date_lteq].present?
+
+      params[:q][:order_date_gteq] = Date.current.beginning_of_month.to_s
+      params[:q][:order_date_lteq] = Date.current.end_of_month.to_s
     end
   end
 

@@ -2,11 +2,24 @@ ActiveAdmin.register OrderItem do
 
   filter :customer, as: :searchable_select, collection: Customer.all
   filter :bag_type, as: :searchable_select, collection: -> { BagType.all }
+  filter :order_order_date, as: :date_range, label: "Order Date"
   filter :created_at
 
   controller do
+    before_action :set_default_month_filter, only: :index
+
     def scoped_collection
       super.includes(order: :customer, :bag_size)
+    end
+
+    private
+
+    def set_default_month_filter
+      params[:q] ||= {}
+      return if params[:q][:order_order_date_gteq].present? || params[:q][:order_order_date_lteq].present?
+
+      params[:q][:order_order_date_gteq] = Date.current.beginning_of_month.to_s
+      params[:q][:order_order_date_lteq] = Date.current.end_of_month.to_s
     end
   end
 
