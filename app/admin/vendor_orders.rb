@@ -103,7 +103,9 @@ ActiveAdmin.register VendorOrder do
   end
 
   index do
-    totals = vendor_orders.reduce({ weight: 0.0, bags: 0, amount: 0.0 }) do |memo, vendor_order|
+    summary_vendor_orders = VendorOrder.ransack(params[:q]).result.includes(:vendor_order_items)
+
+    totals = summary_vendor_orders.reduce({ weight: 0.0, bags: 0, amount: 0.0 }) do |memo, vendor_order|
       memo[:weight] += vendor_order.vendor_order_items.sum(&:total_weight).to_f
       memo[:bags] += vendor_order.vendor_order_items.sum(&:quantity).to_i
       memo[:amount] += vendor_order.total_amount.to_f

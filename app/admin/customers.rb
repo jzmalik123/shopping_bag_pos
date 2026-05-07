@@ -7,8 +7,10 @@ ActiveAdmin.register Customer do
   end
 
   index do
+    summary_customers = Customer.ransack(params[:q]).result
+
     panel "Summary" do
-      h3 "Total Balance: #{number_with_delimiter(Customer.sum(:balance))} Rs"
+      h3 "Total Balance: #{number_with_delimiter(summary_customers.sum(:balance))} Rs"
     end
     column :id
     column :name

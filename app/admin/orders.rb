@@ -100,7 +100,9 @@ ActiveAdmin.register Order do
   end
 
   index do
-    totals = orders.reduce({ weight: 0.0, bags: 0, amount: 0.0 }) do |memo, order|
+    summary_orders = Order.ransack(params[:q]).result.includes(:order_items)
+
+    totals = summary_orders.reduce({ weight: 0.0, bags: 0, amount: 0.0 }) do |memo, order|
       memo[:weight] += order.total_weight.to_f
       memo[:bags] += order.total_bags.to_i
       memo[:amount] += order.total_amount.to_f
@@ -111,7 +113,7 @@ ActiveAdmin.register Order do
 
     panel "Summary" do
       h3 "Total Weight: #{number_with_delimiter(totals[:weight])} KG"
-      h3 "Total Bags: #{number_with_delimiter(totals[:bags])} KG"
+      h3 "Total Bags: #{number_with_delimiter(totals[:bags])}"
       h3 "Total Amount: #{number_with_delimiter(totals[:amount])} Rs"
       h3 "Amount per KG: #{number_with_delimiter(amount_per_kg)} Rs"
     end

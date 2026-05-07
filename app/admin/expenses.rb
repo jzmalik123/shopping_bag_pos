@@ -15,8 +15,10 @@ ActiveAdmin.register Expense do
   end
 
   index do
+    summary_expenses = Expense.ransack(params[:q]).result
+
     panel "Summary" do
-      h3 "Total Expenses: #{number_with_delimiter(expenses.sum(:amount))} Rs"
+      h3 "Total Expenses: #{number_with_delimiter(summary_expenses.sum(:amount))} Rs"
     end
     column :id
     column :expense_date
