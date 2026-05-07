@@ -9,7 +9,7 @@ ActiveAdmin.register OrderItem do
     before_action :set_default_month_filter, only: :index
 
     def scoped_collection
-      super.includes(order: :customer, :bag_size)
+      super.includes({ order: :customer }, :bag_size)
     end
 
     private
