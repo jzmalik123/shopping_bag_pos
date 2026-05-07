@@ -1,9 +1,13 @@
 ActiveAdmin.register Order do
 
   permit_params :customer_id, :previous_balance, :bag_category_id, :order_date, :payment_method, :total_amount, :received_amount, :total_weight, :remaining_balance, order_items_attributes: [:id, :bag_size_id, :rate, :weight, :quantity, :amount, :_destroy]
-  config.paginate = false
+  config.paginate = true
+  config.per_page = 50
 
   controller do
+    def scoped_collection
+      super.includes(:customer, :bag_category, :created_by, :order_items)
+    end
 
     def create
       params.permit!
@@ -84,11 +88,20 @@ ActiveAdmin.register Order do
   end
 
   index do
+    totals = orders.reduce({ weight: 0.0, bags: 0, amount: 0.0 }) do |memo, order|
+      memo[:weight] += order.total_weight.to_f
+      memo[:bags] += order.total_bags.to_i
+      memo[:amount] += order.total_amount.to_f
+      memo
+    end
+
+    amount_per_kg = totals[:weight].positive? ? (totals[:amount] / totals[:weight]) : 0
+
     panel "Summary" do
-      h3 "Total Weight: #{orders.sum(&:total_weight)} KG"
-      h3 "Total Bags: #{orders.sum(&:total_bags)} KG"
-      h3 "Total Amount: #{number_with_delimiter orders.sum(&:total_amount)} Rs"
-      h3 "Amount per KG: #{number_with_delimiter orders.sum(&:total_amount) / orders.sum(&:total_weight)} Rs"
+      h3 "Total Weight: #{number_with_delimiter(totals[:weight])} KG"
+      h3 "Total Bags: #{number_with_delimiter(totals[:bags])} KG"
+      h3 "Total Amount: #{number_with_delimiter(totals[:amount])} Rs"
+      h3 "Amount per KG: #{number_with_delimiter(amount_per_kg)} Rs"
     end
     column :id
     column :bag_category
