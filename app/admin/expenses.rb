@@ -35,6 +35,8 @@ ActiveAdmin.register Expense do
   end
 
   controller do
+    before_action :set_default_month_filter, only: :index
+
     def update
       super do |format|
         if resource.errors.empty?
@@ -54,6 +56,17 @@ ActiveAdmin.register Expense do
         end
       end
     end
-    
+
+    private
+
+    def set_default_month_filter
+      params[:q] ||= {}
+      return if params[:q][:expense_date_gteq].present? || params[:q][:expense_date_lteq].present?
+
+      start_of_month = Date.current.beginning_of_month
+      end_of_month = Date.current.end_of_month
+      params[:q][:expense_date_gteq] = start_of_month.to_s
+      params[:q][:expense_date_lteq] = end_of_month.to_s
+    end
   end
 end
