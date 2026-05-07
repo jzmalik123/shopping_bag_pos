@@ -1,7 +1,8 @@
 ActiveAdmin.register Expense do
 
   permit_params :name, :amount, :expense_date
-  config.paginate = false
+  config.paginate = true
+  config.per_page = 50
 
   form do |f|
     f.inputs 'Expense Details' do
@@ -15,7 +16,7 @@ ActiveAdmin.register Expense do
 
   index do
     panel "Summary" do
-      h3 "Total Expenses: #{number_with_delimiter expenses.sum(&:amount) rescue 0} Rs"
+      h3 "Total Expenses: #{number_with_delimiter(expenses.sum(:amount))} Rs"
     end
     column :id
     column :expense_date

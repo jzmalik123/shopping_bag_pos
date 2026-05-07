@@ -3,6 +3,12 @@ ActiveAdmin.register VendorOrderItem do
   filter :vendor, as: :searchable_select, collection: Vendor.all
   filter :created_at
 
+  controller do
+    def scoped_collection
+      super.includes(vendor_order: :vendor)
+    end
+  end
+
   index do
     column :order_date do |order_item| order_item.vendor_order.order_date.strftime("%B %d, %Y") end
     column "Order" do |order_item|

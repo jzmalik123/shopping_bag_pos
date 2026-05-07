@@ -1,9 +1,13 @@
 ActiveAdmin.register VendorOrder do
 
   permit_params :id, :vendor_id, :previous_balance, :order_date, :payment_method, :total_amount, :received_amount, :total_weight, :remaining_balance, vendor_order_items_attributes: [:id, :rate, :weight, :quantity, :amount, :_destroy]
-  config.paginate = false
+  config.paginate = true
+  config.per_page = 50
 
   controller do
+    def scoped_collection
+      super.includes(:vendor, :vendor_order_items)
+    end
 
     def create
       params.permit!
@@ -87,11 +91,20 @@ ActiveAdmin.register VendorOrder do
   end
 
   index do
+    totals = vendor_orders.reduce({ weight: 0.0, bags: 0, amount: 0.0 }) do |memo, vendor_order|
+      memo[:weight] += vendor_order.vendor_order_items.sum(&:total_weight).to_f
+      memo[:bags] += vendor_order.vendor_order_items.sum(&:quantity).to_i
+      memo[:amount] += vendor_order.total_amount.to_f
+      memo
+    end
+
+    amount_per_kg = totals[:weight].positive? ? (totals[:amount] / totals[:weight]) : 0
+
     panel "Summary" do
-      h3 "Total Weight: #{VendorOrderItem.where(vendor_order_id: vendor_orders.pluck(:id)).sum(&:total_weight)} KG"
-      h3 "Total Bags: #{VendorOrderItem.where(vendor_order_id: vendor_orders.pluck(:id)).sum(&:quantity)}"
-      h3 "Total Amount: #{number_with_delimiter vendor_orders.sum(&:total_amount)} Rs"
-      h3 "Amount per KG: #{number_with_delimiter vendor_orders.sum(&:total_amount) / VendorOrderItem.where(vendor_order_id: vendor_orders.pluck(:id)).sum(&:total_weight)} Rs"
+      h3 "Total Weight: #{number_with_delimiter(totals[:weight])} KG"
+      h3 "Total Bags: #{number_with_delimiter(totals[:bags])}"
+      h3 "Total Amount: #{number_with_delimiter(totals[:amount])} Rs"
+      h3 "Amount per KG: #{number_with_delimiter(amount_per_kg)} Rs"
     end
     column :id
     column :order_date
