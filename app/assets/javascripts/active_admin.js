@@ -2,31 +2,39 @@
 //= require active_admin/searchable_select
 
 if(window.location.href.search('admin/orders') != -1){
+  function toNumber(value) {
+    const number = Number(value)
+    return Number.isFinite(number) ? number : 0
+  }
+
   function calculateAmount(field) {
-    arr = $(field).attr('id').split('_')
-    index = arr[arr.length - 2]
+    const arr = $(field).attr('id').split('_')
+    const index = arr[arr.length - 2]
   
-    rate = $(`#order_order_items_attributes_${index}_rate`).val()
-    weight = $(`#order_order_items_attributes_${index}_weight`).val()
-    quantity = $(`#order_order_items_attributes_${index}_quantity`).val()
+    const rate = toNumber($(`#order_order_items_attributes_${index}_rate`).val())
+    const weight = toNumber($(`#order_order_items_attributes_${index}_weight`).val())
+    const quantity = toNumber($(`#order_order_items_attributes_${index}_quantity`).val())
   
-    amount_field = $(`#order_order_items_attributes_${index}_amount`)
-    if(rate != 0 && weight != 0 && quantity !=0){
+    const amount_field = $(`#order_order_items_attributes_${index}_amount`)
+    if(rate !== 0 && weight !== 0 && quantity !== 0){
       amount_field.val(rate * quantity * weight)
       updateOrderFields()
     }
   }
   
   function updateOrderFields(){
-    order_items_count = $('.has_many_fields').length
-    order_total_amount = 0
-    order_total_weight = 0
-    order_total_quantity = 0
-    for(index=0; index<order_items_count; index++){
-      quantity = parseInt($(`#order_order_items_attributes_${index}_quantity`).val())
-      order_total_quantity += parseInt($(`#order_order_items_attributes_${index}_quantity`).val())
-      order_total_weight += parseInt($(`#order_order_items_attributes_${index}_weight`).val() * quantity)
-      order_total_amount += parseInt($(`#order_order_items_attributes_${index}_amount`).val())
+    const order_items_count = $('.has_many_fields').length
+    let order_total_amount = 0
+    let order_total_weight = 0
+    let order_total_quantity = 0
+    for(let index = 0; index < order_items_count; index++){
+      const quantity = toNumber($(`#order_order_items_attributes_${index}_quantity`).val())
+      const weight = toNumber($(`#order_order_items_attributes_${index}_weight`).val())
+      const amount = toNumber($(`#order_order_items_attributes_${index}_amount`).val())
+
+      order_total_quantity += quantity
+      order_total_weight += (weight * quantity)
+      order_total_amount += amount
     }
     $('#order_total_quantity').val(order_total_quantity)
     $('#order_total_amount').val(order_total_amount)
@@ -36,13 +44,18 @@ if(window.location.href.search('admin/orders') != -1){
   }
   
   function updateRemainingBalance(field){
-    order_total_amount = parseInt($('#order_total_amount').val())
-    previous_balance = parseInt($('#order_previous_balance').val())
-    order_received_amount = parseInt($('#order_received_amount').val())
+    const order_total_amount = toNumber($('#order_total_amount').val())
+    const previous_balance = toNumber($('#order_previous_balance').val())
+    const order_received_amount = toNumber($('#order_received_amount').val())
     $('#order_remaining_balance').val(order_total_amount + previous_balance - order_received_amount)
   }
   
   $(document).ready(function() {
+    // Prevent accidental +/-1 changes from mouse wheel on focused number inputs.
+    $(document).on('wheel', 'input[type=number]', function(e) {
+      e.preventDefault()
+      $(this).blur()
+    })
 
     function getConfigurationValue(configuration_key){
       $.ajax({
@@ -90,26 +103,31 @@ if(window.location.href.search('admin/orders') != -1){
     }
   })
 } else if(window.location.href.search('vendor_orders') != -1){
+  function toNumber(value) {
+    const number = Number(value)
+    return Number.isFinite(number) ? number : 0
+  }
+
   function calculateAmount(field) {
-    arr = $(field).attr('id').split('_')
-    index = arr[arr.length - 2]
+    const arr = $(field).attr('id').split('_')
+    const index = arr[arr.length - 2]
   
-    rate = $(`#vendor_order_vendor_order_items_attributes_${index}_rate`).val()
-    quantity = $(`#vendor_order_vendor_order_items_attributes_${index}_quantity`).val()
+    const rate = toNumber($(`#vendor_order_vendor_order_items_attributes_${index}_rate`).val())
+    const quantity = toNumber($(`#vendor_order_vendor_order_items_attributes_${index}_quantity`).val())
   
-    amount_field = $(`#vendor_order_vendor_order_items_attributes_${index}_amount`)
-    if(rate != 0 && quantity !=0){
+    const amount_field = $(`#vendor_order_vendor_order_items_attributes_${index}_amount`)
+    if(rate !== 0 && quantity !== 0){
       amount_field.val(rate * quantity)
       updateOrderFields()
     }
   }
   
   function updateOrderFields(){
-    order_items_count = $('.has_many_fields').length
-    order_total_amount = 0
-    order_total_weight = 0
-    for(index=0; index<order_items_count; index++){
-      order_total_amount += parseInt($(`#vendor_order_vendor_order_items_attributes_${index}_amount`).val())
+    const order_items_count = $('.has_many_fields').length
+    let order_total_amount = 0
+    let order_total_weight = 0
+    for(let index = 0; index < order_items_count; index++){
+      order_total_amount += toNumber($(`#vendor_order_vendor_order_items_attributes_${index}_amount`).val())
     }
     $('#vendor_order_total_amount').val(order_total_amount)
     $('#vendor_order_total_weight').val(order_total_weight)
@@ -118,13 +136,19 @@ if(window.location.href.search('admin/orders') != -1){
   }
   
   function updateRemainingBalance(field){
-    order_total_amount = parseInt($('#vendor_order_total_amount').val())
-    previous_balance = parseInt($('#vendor_order_previous_balance').val())
-    order_received_amount = parseInt($('#vendor_order_received_amount').val())
+    const order_total_amount = toNumber($('#vendor_order_total_amount').val())
+    const previous_balance = toNumber($('#vendor_order_previous_balance').val())
+    const order_received_amount = toNumber($('#vendor_order_received_amount').val())
     $('#vendor_order_remaining_balance').val(order_total_amount + previous_balance - order_received_amount)
   }
   
   $(document).ready(function() {
+    // Prevent accidental +/-1 changes from mouse wheel on focused number inputs.
+    $(document).on('wheel', 'input[type=number]', function(e) {
+      e.preventDefault()
+      $(this).blur()
+    })
+
     getVendorPreviousBalance()
     $('#vendor_order_vendor_id').on("change", function(){
       getVendorPreviousBalance()
