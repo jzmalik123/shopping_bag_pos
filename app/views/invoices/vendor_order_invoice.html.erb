@@ -19,11 +19,14 @@
   </style>
 </head>
 <body>
+  <% logo_src = pdf_logo_src %>
   <div class="container">
     <div class="row">
       <div class="col-xs-12">
         <div class="invoice-title">
-          <img src="<%= image_url('logo_with_tagline') %>" width="400" style="margin-left: 25%;">
+          <% if logo_src.present? %>
+            <img src="<%= logo_src %>" width="400" style="margin-left: 25%;">
+          <% end %>
           <h2 class="pull-right">Order # <br>  <%= @vendor_order.id %></h2>
         </div>
         <hr style="margin: 7px 0px;">
