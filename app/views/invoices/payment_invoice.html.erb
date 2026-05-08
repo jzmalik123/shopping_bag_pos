@@ -19,15 +19,11 @@
   </style>
 </head>
 <body>
-  <% logo_candidates = %w[logo_with_tagline.png logo_with_tagline.jpg logo_with_tagline.jpeg logo_with_tagline.webp] %>
-  <% logo_file = logo_candidates.map { |name| Rails.root.join("public", name) }.find { |path| File.exist?(path) } %>
   <div class="container">
     <div class="row">
       <div class="col-xs-12">
         <div class="invoice-title">
-          <% if logo_file %>
-            <img src="file://<%= logo_file %>" width="400" style="margin-left: 25%;">
-          <% end %>
+          <img src="<%= image_url('logo_with_tagline') %>" width="400" style="margin-left: 25%;">
           <h2 class="pull-right">Payment # <%= payment.id %></h2>
         </div>
         <hr style="margin: 15px 0px;">
